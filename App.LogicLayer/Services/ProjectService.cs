@@ -34,6 +34,7 @@ namespace App.LogicLayer.Services
             if (project == null)
                 throw new NotFoundException();
 
+            project.Employees.Clear();
             _unitOfWork.Projects.Delete(id);
             _unitOfWork.Save();
         }
@@ -59,9 +60,38 @@ namespace App.LogicLayer.Services
 
         public void Update(ProjectDTO projectDTO)
         {
-            Project project = Mapper.Map<Project>(projectDTO);
+            Project project = _unitOfWork.Projects.Get(projectDTO.Id);
+            project.Title = projectDTO.Title;
+            project.Customer = projectDTO.Customer;
+            project.Performer = projectDTO.Performer;
+            project.Priority = projectDTO.Priority;
+            project.DateStart = projectDTO.DateStart;
+            project.DateEnd = projectDTO.DateEnd;
+            project.ManagerId = projectDTO.ManagerId;
 
             _unitOfWork.Projects.Update(project);
+            _unitOfWork.Save();
+        }
+
+        public void AttachEmployee(Guid projectId, Guid employeeId)
+        {
+            Project project = _unitOfWork.Projects.Get(projectId);
+            Employee employee = _unitOfWork.Employees.Get(employeeId);
+            if (project == null || employee == null)
+                throw new NotFoundException();
+
+            project.Employees.Add(employee);
+            _unitOfWork.Save();
+        }
+
+        public void DetachEmployee(Guid projectId, Guid employeeId)
+        {
+            Project project = _unitOfWork.Projects.Get(projectId);
+            Employee employee = _unitOfWork.Employees.Get(employeeId);
+            if (project == null || employee == null)
+                throw new NotFoundException();
+
+            project.Employees.Remove(employee);
             _unitOfWork.Save();
         }
     }

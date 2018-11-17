@@ -1,4 +1,7 @@
-﻿using App.LogicLayer.Interfaces;
+﻿using App.LogicLayer.DTO;
+using App.LogicLayer.Interfaces;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace App.Web.Controllers
@@ -22,6 +25,13 @@ namespace App.Web.Controllers
         public BaseController(IProjectService projectService)
         {
             ProjectService = projectService;
+        }
+
+        public ActionResult Error(string message)
+        {
+            ViewBag.Message = message;
+
+            return View();
         }
     }
 }

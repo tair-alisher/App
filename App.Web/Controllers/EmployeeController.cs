@@ -97,10 +97,25 @@ namespace App.Web.Controllers
             }
             catch (Exception ex)
             {
-                return Content(ex.Message);
+                return RedirectToRoute(new
+                {
+                    controller = "Base",
+                    action = "Error",
+                    message = ex.Message
+                });
             }
 
             return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult FindEmployees(string name)
+        {
+            List<EmployeeDTO> employeeDTOs = EmployeeService.GetEmployeesByName(name).ToList();
+            List<EmployeeVM> employeeVMs = Mapper.Map<IEnumerable<EmployeeVM>>(employeeDTOs).ToList();
+
+            return PartialView(employeeVMs);
         }
     }
 }

@@ -38,11 +38,17 @@ namespace App.Web.Controllers
 
         public ActionResult Create()
         {
-            List<EmployeeDTO> employeeDTOList = EmployeeService.GetAll().ToList();
-            List<EmployeeVM> employeeVMList = Mapper.Map<IEnumerable<EmployeeVM>>(employeeDTOList).ToList();
-            ViewBag.ManagerId = new SelectList(employeeVMList, "Id", "FullName");
+            ViewBag.ManagerId = GetEmployeeSelectList();
 
             return View();
+        }
+
+        private SelectList GetEmployeeSelectList(Guid? selectValue = null)
+        {
+            List<EmployeeDTO> employeeDTOList = EmployeeService.GetAll().ToList();
+            List<EmployeeVM> employeeVMList = Mapper.Map<IEnumerable<EmployeeVM>>(employeeDTOList).ToList();
+
+            return new SelectList(employeeVMList, "Id", "FullName", selectValue);
         }
 
         [HttpPost]
@@ -57,9 +63,7 @@ namespace App.Web.Controllers
                 return RedirectToAction("Index");
             }
 
-            List<EmployeeDTO> employeeDTOList = EmployeeService.GetAll().ToList();
-            List<EmployeeVM> employeeVMList = Mapper.Map<IEnumerable<EmployeeVM>>(employeeDTOList).ToList();
-            ViewBag.ManagerId = new SelectList(employeeVMList, "Id", "FullName", model.ManagerId);
+            ViewBag.ManagerId = GetEmployeeSelectList(model.ManagerId);
 
             return View(model);
         }
@@ -74,10 +78,8 @@ namespace App.Web.Controllers
                 return HttpNotFound();
 
             ProjectVM projectVM = Mapper.Map<ProjectVM>(projectDTO);
-
-            List<EmployeeDTO> employeeDTOList = EmployeeService.GetAll().ToList();
-            List<EmployeeVM> employeeVMList = Mapper.Map<IEnumerable<EmployeeVM>>(employeeDTOList).ToList();
-            ViewBag.ManagerId = new SelectList(employeeVMList, "Id", "FullName", projectVM.ManagerId);
+            
+            ViewBag.ManagerId = GetEmployeeSelectList(projectVM.ManagerId);
 
             return View(projectVM);
         }
@@ -93,10 +95,8 @@ namespace App.Web.Controllers
 
                 return RedirectToAction("Index");
             }
-
-            List<EmployeeDTO> employeeDTOList = EmployeeService.GetAll().ToList();
-            List<EmployeeVM> employeeVMList = Mapper.Map<IEnumerable<EmployeeVM>>(employeeDTOList).ToList();
-            ViewBag.ManagerId = new SelectList(employeeVMList, "Id", "FullName", model.ManagerId);
+            
+            ViewBag.ManagerId = GetEmployeeSelectList(model.ManagerId);
 
             return View(model);
         }
@@ -109,10 +109,62 @@ namespace App.Web.Controllers
             }
             catch (Exception ex)
             {
-                return Content(ex.Message);
+                return RedirectToRoute(new
+                {
+                    controller = "Base",
+                    action = "Error",
+                    message = ex.Message
+                });
             }
 
             return RedirectToAction("Index");
+        }
+
+        public ActionResult AttachedEmployees(Guid? id)
+        {
+            if (id == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            ProjectDTO projectDTO = ProjectService.Get((Guid)id);
+            if (projectDTO == null)
+                return HttpNotFound();
+
+            ProjectVM projectVM = Mapper.Map<ProjectVM>(projectDTO);
+
+            return View(projectVM);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AttachEmployee(Guid projectId, Guid employeeId)
+        {
+            EmployeeVM employeeVM;
+            try
+            {
+                employeeVM = Mapper.Map<EmployeeVM>(EmployeeService.Get(employeeId));
+                ProjectService.AttachEmployee(projectId, employeeId);
+            }
+            catch (Exception ex)
+            {
+                return Content(ex.Message);
+            }
+
+            return PartialView(employeeVM);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public string DetachEmployee(Guid projectId, Guid employeeId)
+        {
+            try
+            {
+                ProjectService.DetachEmployee(projectId, employeeId);
+                return "success";
+            }
+            catch (Exception ex)
+            {
+                return "fail";
+            }
         }
     }
 }

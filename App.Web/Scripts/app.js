@@ -58,8 +58,8 @@ function attachEmployee(employeeId) {
             "employeeId": employeeId
         },
         success: function (html) {
-            console.log(html);
-            $("#attached-employees").append(html);
+            $('#no-employees-message').remove();
+            $('#attached-employees').append(html);
         },
         error: function (XmlHttpRequest) {
             console.log(XmlHttpRequest);

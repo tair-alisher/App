@@ -33,7 +33,23 @@ namespace App.LogicLayer.Services
             if (employee == null)
                 throw new NotFoundException();
 
+            RemoveManagerFromProjects(employee.Id);
+            employee.Projects.Clear();
+
             _unitOfWork.Employees.Delete(id);
+            _unitOfWork.Save();
+        }
+
+        private void RemoveManagerFromProjects(Guid employeeId)
+        {
+            List<Project> projects = _unitOfWork
+                .Projects
+                .Find(p => p.ManagerId == employeeId)
+                .ToList();
+
+            foreach (var project in projects)
+                project.ManagerId = null;
+
             _unitOfWork.Save();
         }
 
@@ -62,6 +78,67 @@ namespace App.LogicLayer.Services
 
             _unitOfWork.Employees.Update(employee);
             _unitOfWork.Save();
+        }
+
+        public IEnumerable<EmployeeDTO> GetEmployeesByName(string inputName)
+        {
+            IEnumerable<Employee> foundEmployees = Enumerable.Empty<Employee>();
+
+            string name = inputName.Trim();
+            if (name.Length <= 0)
+                return Mapper.Map<IEnumerable<EmployeeDTO>>(foundEmployees);
+
+            NameParts nameParts = new NameParts(name);
+
+            while (nameParts.PartsCount > 0)
+            {
+                foundEmployees = GetEmployeesByName(foundEmployees, nameParts.GetFirstElement());
+                nameParts.RemoveFirstElement();
+            }
+
+            return Mapper.Map<IEnumerable<EmployeeDTO>>(foundEmployees);
+        }
+
+        private IEnumerable<Employee> GetEmployeesByName(IEnumerable<Employee> employees, string name)
+        {
+            List<Employee> foundEmployees = (
+                from
+                    emp in employees.Count() > 0 ? employees : _unitOfWork.Employees.GetAll()
+                where
+                    emp.LastName.IndexOf(name, StringComparison.CurrentCultureIgnoreCase) >= 0 ||
+                    emp.FirstName.IndexOf(name, StringComparison.CurrentCultureIgnoreCase) >= 0
+                select emp
+                ).ToList();
+
+            return foundEmployees;
+        }
+    }
+
+    class NameParts
+    {
+        const int MaxNumberOfPartsInFullName = 3;
+
+        List<string> Parts { get; }
+        public int PartsCount
+        {
+            get { return Parts.Count(); }
+        }
+
+        public NameParts(string name)
+        {
+            Parts = name.Split(' ').ToList();
+            if (Parts.Count() > MaxNumberOfPartsInFullName)
+                Parts = Parts.Take(MaxNumberOfPartsInFullName).ToList();
+        }
+
+        public string GetFirstElement()
+        {
+            return Parts.First();
+        }
+
+        public void RemoveFirstElement()
+        {
+            Parts.Remove(Parts.First());
         }
     }
 }

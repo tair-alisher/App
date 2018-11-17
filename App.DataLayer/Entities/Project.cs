@@ -15,7 +15,7 @@ namespace App.DataLayer.Entities
         public string Comment { get; set; }
 
         public DateTime DateStart { get; set; }
-        public DateTime DateEnd { get; set; }
+        public DateTime? DateEnd { get; set; }
         public DateTime CreatedAt { get; set; }
 
         public Guid? ManagerId { get; set; }

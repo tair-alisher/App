@@ -1,0 +1,87 @@
+﻿@model App.Web.Models.ProjectVM
+
+@{
+    ViewBag.Title = "Подробности";
+}
+
+<h2>Подробности</h2>
+
+<div>
+    <h4>@Html.DisplayFor(model => model.Title)</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Customer)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Customer)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Performer)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Performer)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Priority)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Priority)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Comment)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Comment)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateStart)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateStart)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateEnd)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateEnd)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ManagerId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Manager.FullName)
+        </dd>
+
+    </dl>
+</div>
+
+<h4>Прикрепленные сотрудники</h4>
+@if (Model.Employees.Count() > 0)
+{
+    foreach (var employee in Model.Employees)
+    {
+        <p>@employee.FullName</p>
+    }
+}
+else
+{
+    <p>Нет прикрепленных сотрудников.</p>
+}
+<p>
+    @Html.ActionLink("Редактировать", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Назад к списку", "Index")
+</p>
