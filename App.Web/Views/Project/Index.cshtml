@@ -9,63 +9,74 @@
 <p>
     @Html.ActionLink("Добавить проект", "Create")
 </p>
-<table class="table table-sm table-responsive">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Title)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Customer)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Performer)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Priority)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DateStart)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DateEnd)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ManagerId)
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
+<p>
+    Отсортировать по:
+    <button class="btn btn-secondary active" id="title-sort-btn" onclick="sortProjectListBy('title')">Названию</button>
+    <button class="btn btn-secondary btn-sm" id="customer-sort-btn" onclick="sortProjectListBy('customer')">Заказчику</button>
+    <button class="btn btn-secondary btn-sm" id="performer-sort-btn" onclick="sortProjectListBy('performer')">Исполнителю</button>
+    <button class="btn btn-secondary btn-sm" id="priority-sort-btn" onclick="sortProjectListBy('priority')">Приоритету</button>
+    <button class="btn btn-secondary btn-sm" id="dateStart-sort-btn" onclick="sortProjectListBy('dateStart')">Дате начала</button>
+    <button class="btn btn-secondary btn-sm" id="dateEnd-sort-btn" onclick="sortProjectListBy('dateEnd')">Дате окончания</button>
+</p>
+<div id="target-div">
+    <table class="table table-sm table-responsive">
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Customer)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Performer)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Priority)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateStart)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateEnd)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Manager.FullName)
-            </td>
-            <td>
-                @Html.ActionLink("Редактировать", "Edit", new { id = item.Id })<br />
-                @Html.ActionLink("Подробнее", "Details", new { id = item.Id })<br />
-                @Html.ActionLink("Сотрудники", "AttachedEmployees", new { id = item.Id })<br />
-                @Html.ActionLink("Удалить", "Delete", new { id = item.Id })
-            </td>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Customer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Performer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Priority)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateStart)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateEnd)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ManagerId)
+            </th>
+            <th></th>
         </tr>
-    }
 
-</table>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Customer)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Performer)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Priority)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateStart)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateEnd)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Manager.FullName)
+                </td>
+                <td>
+                    @Html.ActionLink("Редактировать", "Edit", new { id = item.Id })<br />
+                    @Html.ActionLink("Подробнее", "Details", new { id = item.Id })<br />
+                    @Html.ActionLink("Сотрудники", "AttachedEmployees", new { id = item.Id })<br />
+                    @Html.ActionLink("Удалить", "Delete", new { id = item.Id })
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>

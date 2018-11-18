@@ -166,5 +166,14 @@ namespace App.Web.Controllers
                 return "fail";
             }
         }
+
+        [HttpPost]
+        public ActionResult GetProjectListSortedBy(string property)
+        {
+            List<ProjectDTO> projectDTOSortedList = ProjectService.GetProjectListSortedBy(property).ToList();
+            List<ProjectVM> projectVMSortedList = Mapper.Map<IEnumerable<ProjectVM>>(projectDTOSortedList).ToList();
+
+            return PartialView(projectVMSortedList);
+        }
     }
 }

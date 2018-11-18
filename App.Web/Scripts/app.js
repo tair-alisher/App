@@ -94,3 +94,62 @@ function detachEmployee(employeeId) {
     });
     return false;
 }
+
+function sortProjectListBy(property) {
+    resetActiveSortButton(property);
+
+    $.ajax({
+        url: '/Project/GetProjectListSortedBy',
+        type: 'Post',
+        data: {
+            'property': property
+        },
+        success: function (html) {
+            $("#target-div").empty();
+            $("#target-div").append(html);
+        },
+        error: function (XmlHttpRequest) {
+            alert('Произошла ошибка');
+            console.log(XmlHttpRequest);
+        }
+    });
+    return false;
+}
+
+function resetActiveSortButton(property) {
+    dropCurrentActiveSortButton();
+
+    switch (property) {
+        case 'title':
+            setActiveSortButton($("#title-sort-btn"));
+            break;
+        case 'customer':
+            setActiveSortButton($("#customer-sort-btn"));
+            break;
+        case 'performer':
+            setActiveSortButton($("#performer-sort-btn"));
+            break;
+        case 'priority':
+            setActiveSortButton($("#priority-sort-btn"));
+            break;
+        case 'dateStart':
+            setActiveSortButton($("#dateStart-sort-btn"));
+            break;
+        case 'dateEnd':
+            setActiveSortButton($("#dateEnd-sort-btn"));
+            break;
+    }
+}
+
+function dropCurrentActiveSortButton() {
+    var activeSortButtons = $(".active");
+    for (var i = 0; i < activeSortButtons.length; i++) {
+        activeSortButtons[i].classList.add('btn-sm');
+        activeSortButtons[i].classList.remove('active');
+    }
+}
+
+function setActiveSortButton(button) {
+    button.removeClass('btn-sm');
+    button.addClass('active');
+}

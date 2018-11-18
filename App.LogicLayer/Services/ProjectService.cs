@@ -94,5 +94,34 @@ namespace App.LogicLayer.Services
             project.Employees.Remove(employee);
             _unitOfWork.Save();
         }
+
+        public IEnumerable<ProjectDTO> GetProjectListSortedBy(string property)
+        {
+            IQueryable<Project> sortedProjectList = _unitOfWork.Projects.GetAll();
+
+            switch (property)
+            {
+                case "title":
+                    sortedProjectList = sortedProjectList.OrderBy(p => p.Title);
+                    break;
+                case "customer":
+                    sortedProjectList = sortedProjectList.OrderBy(p => p.Customer);
+                    break;
+                case "performer":
+                    sortedProjectList = sortedProjectList.OrderBy(p => p.Performer);
+                    break;
+                case "priority":
+                    sortedProjectList = sortedProjectList.OrderBy(p => p.Priority);
+                    break;
+                case "dateStart":
+                    sortedProjectList = sortedProjectList.OrderBy(p => p.DateStart);
+                    break;
+                case "dateEnd":
+                    sortedProjectList = sortedProjectList.OrderBy(p => p.DateEnd);
+                    break;
+            }
+
+            return Mapper.Map<IEnumerable<ProjectDTO>>(sortedProjectList.ToList());
+        }
     }
 }

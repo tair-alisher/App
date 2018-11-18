@@ -274,6 +274,7 @@
     <Content Include="Views\Project\AttachedEmployees.cshtml" />
     <Content Include="Views\Project\AttachEmployee.cshtml" />
     <Content Include="Views\Base\Error.cshtml" />
+    <Content Include="Views\Project\GetProjectListSortedBy.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

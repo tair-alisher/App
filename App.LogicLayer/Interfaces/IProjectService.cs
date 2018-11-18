@@ -1,5 +1,6 @@
 ﻿using App.LogicLayer.DTO;
 using System;
+using System.Collections.Generic;
 
 namespace App.LogicLayer.Interfaces
 {
@@ -7,5 +8,6 @@ namespace App.LogicLayer.Interfaces
     {
         void AttachEmployee(Guid projectId, Guid employeeId);
         void DetachEmployee(Guid projectId, Guid employeeId);
+        IEnumerable<ProjectDTO> GetProjectListSortedBy(string property);
     }
 }
