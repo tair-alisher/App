@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.DataLayer", "App.DataLa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.LogicLayer", "App.LogicLayer\App.LogicLayer.csproj", "{6647DE0E-8FE9-4046-AB95-D3C71DDA9C81}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.LogicLayer.Tests", "App.LogicLayer.Tests\App.LogicLayer.Tests.csproj", "{9E2370C6-C129-4674-AF48-285BC226B8D0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{6647DE0E-8FE9-4046-AB95-D3C71DDA9C81}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6647DE0E-8FE9-4046-AB95-D3C71DDA9C81}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6647DE0E-8FE9-4046-AB95-D3C71DDA9C81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E2370C6-C129-4674-AF48-285BC226B8D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E2370C6-C129-4674-AF48-285BC226B8D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E2370C6-C129-4674-AF48-285BC226B8D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E2370C6-C129-4674-AF48-285BC226B8D0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
