@@ -8,6 +8,6 @@ namespace App.LogicLayer.Interfaces
     {
         void AttachEmployee(Guid projectId, Guid employeeId);
         void DetachEmployee(Guid projectId, Guid employeeId);
-        IEnumerable<ProjectDTO> GetProjectListSortedBy(string property);
+        IEnumerable<ProjectDTO> GetFilteredAndSortedProjectList(string startDate, string priority, string managerId, string sortProperty);
     }
 }

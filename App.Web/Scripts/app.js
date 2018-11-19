@@ -97,6 +97,7 @@ function detachEmployee(employeeId) {
 
 function sortProjectListBy(property) {
     resetActiveSortButton(property);
+    filterAndSortProjectList();
 
     $.ajax({
         url: '/Project/GetProjectListSortedBy',
@@ -118,27 +119,7 @@ function sortProjectListBy(property) {
 
 function resetActiveSortButton(property) {
     dropCurrentActiveSortButton();
-
-    switch (property) {
-        case 'title':
-            setActiveSortButton($("#title-sort-btn"));
-            break;
-        case 'customer':
-            setActiveSortButton($("#customer-sort-btn"));
-            break;
-        case 'performer':
-            setActiveSortButton($("#performer-sort-btn"));
-            break;
-        case 'priority':
-            setActiveSortButton($("#priority-sort-btn"));
-            break;
-        case 'dateStart':
-            setActiveSortButton($("#dateStart-sort-btn"));
-            break;
-        case 'dateEnd':
-            setActiveSortButton($("#dateEnd-sort-btn"));
-            break;
-    }
+    setActiveSortButton($("#" + property + "-sort-btn"));
 }
 
 function dropCurrentActiveSortButton() {
@@ -152,4 +133,33 @@ function dropCurrentActiveSortButton() {
 function setActiveSortButton(button) {
     button.removeClass('btn-sm');
     button.addClass('active');
+}
+
+function filterAndSortProjectList() {
+    $(".filter").change(function () {
+        var sortProperty = $(".active")[0].dataset.property;
+        var startDateFilterValue = $("#startDate-filter").val();
+        var priorityFilterValue = $("#priority-filter").val();
+        var managerFilterValue = $("#manager-filter").val();
+
+        $.ajax({
+            url: '/Project/GetFilteredAndSortedProjectList',
+            type: 'Post',
+            data: {
+                sortProperty,
+                startDateFilterValue,
+                priorityFilterValue,
+                managerFilterValue
+            },
+            success: function (html) {
+                $("#target-div").empty();
+                $("#target-div").append(html);
+            },
+            error: function (XmlHttpRequest) {
+                alert('Произошла ошибка');
+                console.log(XmlHttpRequest);
+            }
+        });
+        return false;
+    });
 }

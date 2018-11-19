@@ -11,12 +11,35 @@
 </p>
 <p>
     Отсортировать по:
-    <button class="btn btn-secondary active" id="title-sort-btn" onclick="sortProjectListBy('title')">Названию</button>
-    <button class="btn btn-secondary btn-sm" id="customer-sort-btn" onclick="sortProjectListBy('customer')">Заказчику</button>
-    <button class="btn btn-secondary btn-sm" id="performer-sort-btn" onclick="sortProjectListBy('performer')">Исполнителю</button>
-    <button class="btn btn-secondary btn-sm" id="priority-sort-btn" onclick="sortProjectListBy('priority')">Приоритету</button>
-    <button class="btn btn-secondary btn-sm" id="dateStart-sort-btn" onclick="sortProjectListBy('dateStart')">Дате начала</button>
-    <button class="btn btn-secondary btn-sm" id="dateEnd-sort-btn" onclick="sortProjectListBy('dateEnd')">Дате окончания</button>
+    <button data-property="title" class="btn btn-secondary active" id="title-sort-btn" onclick="sortProjectListBy('title')">Названию</button>
+    <button data-property="customer" class="btn btn-secondary btn-sm" id="customer-sort-btn" onclick="sortProjectListBy('customer')">Заказчику</button>
+    <button data-property="performer" class="btn btn-secondary btn-sm" id="performer-sort-btn" onclick="sortProjectListBy('performer')">Исполнителю</button>
+    <button data-property="priority" class="btn btn-secondary btn-sm" id="priority-sort-btn" onclick="sortProjectListBy('priority')">Приоритету</button>
+    <button data-property="dateStart" class="btn btn-secondary btn-sm" id="dateStart-sort-btn" onclick="sortProjectListBy('dateStart')">Дате начала</button>
+    <button data-property="dateEnd" class="btn btn-secondary btn-sm" id="dateEnd-sort-btn" onclick="sortProjectListBy('dateEnd')">Дате окончания</button>
+</p>
+<p>
+    <div class="row">
+        <div class="col-md-1">Фильтры:</div>
+        <div class="col-md-3">
+            <label for="startDate-filter">Дата начала</label>
+            <select id="startDate-filter" name="startDate-filter" class="form-control filter" onchange="filterProjectList()">
+                <option selected value="">Дата начала</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label for="priority-filter">Приоритет</label>
+            <select id="priority-filter" name="priority-filter" class="form-control filter" onchange="filterProjectList()">
+                <option selected value="">Приоритет</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label for="manager-filter">Руководитель</label>
+            <select id="manager-filter" name="manager-filter" class="form-control filter" onchange="filterProjectList()">
+                <option selected value="">Руководитель</option>
+            </select>
+        </div>
+    </div>
 </p>
 <div id="target-div">
     <table class="table table-sm table-responsive">
