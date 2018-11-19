@@ -19,7 +19,8 @@ namespace App.Web.Controllers
             List<ProjectDTO> projectDTOList = ProjectService.GetAll().ToList();
             List<ProjectVM> projectVMList = Mapper.Map<IEnumerable<ProjectVM>>(projectDTOList).ToList();
 
-
+            List<EmployeeDTO> managerList = ProjectService.GetManagerList();
+            ViewBag.Managers = Mapper.Map<IEnumerable<EmployeeVM>>(managerList);
 
             return View(projectVMList);
         }
@@ -163,34 +164,27 @@ namespace App.Web.Controllers
                 ProjectService.DetachEmployee(projectId, employeeId);
                 return "success";
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return "fail";
             }
         }
-
-        //[HttpPost]
-        //public ActionResult GetProjectListSortedBy(string property)
-        //{
-        //    List<ProjectDTO> projectDTOSortedList = ProjectService.GetProjectListSortedBy(property).ToList();
-        //    List<ProjectVM> projectVMSortedList = Mapper.Map<IEnumerable<ProjectVM>>(projectDTOSortedList).ToList();
-
-        //    return PartialView(projectVMSortedList);
-        //}
 
         [HttpPost]
         public ActionResult GetFilteredAndSortedProjectList()
         {
             string sortProperty = Request.Form["sortProperty"];
             string startDateFilterValue = Request.Form["startDateFilterValue"];
-            string priorityFilterValue = Request.Form["priorityFilterVlaue"];
+            string priorityFilterValue = Request.Form["priorityFilterValue"];
             string managerFilterValue = Request.Form["managerFilterValue"];
 
             List<ProjectDTO> projectDTOFilteredAndSortedList = ProjectService
                 .GetFilteredAndSortedProjectList(startDateFilterValue, priorityFilterValue, managerFilterValue, sortProperty)
                 .ToList();
 
-            return PartialView();
+            List<ProjectVM> projectVMFilteredAndSortedList = Mapper.Map<IEnumerable<ProjectVM>>(projectDTOFilteredAndSortedList).ToList();
+
+            return PartialView(projectVMFilteredAndSortedList);
         }
     }
 }

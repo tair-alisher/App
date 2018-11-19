@@ -95,26 +95,9 @@ function detachEmployee(employeeId) {
     return false;
 }
 
-function sortProjectListBy(property) {
+function sortAndFilterProjectList(property) {
     resetActiveSortButton(property);
-    filterAndSortProjectList();
-
-    $.ajax({
-        url: '/Project/GetProjectListSortedBy',
-        type: 'Post',
-        data: {
-            'property': property
-        },
-        success: function (html) {
-            $("#target-div").empty();
-            $("#target-div").append(html);
-        },
-        error: function (XmlHttpRequest) {
-            alert('Произошла ошибка');
-            console.log(XmlHttpRequest);
-        }
-    });
-    return false;
+    filterAndSortProjectListLogic();
 }
 
 function resetActiveSortButton(property) {
@@ -136,30 +119,36 @@ function setActiveSortButton(button) {
 }
 
 function filterAndSortProjectList() {
-    $(".filter").change(function () {
-        var sortProperty = $(".active")[0].dataset.property;
-        var startDateFilterValue = $("#startDate-filter").val();
-        var priorityFilterValue = $("#priority-filter").val();
-        var managerFilterValue = $("#manager-filter").val();
-
-        $.ajax({
-            url: '/Project/GetFilteredAndSortedProjectList',
-            type: 'Post',
-            data: {
-                sortProperty,
-                startDateFilterValue,
-                priorityFilterValue,
-                managerFilterValue
-            },
-            success: function (html) {
-                $("#target-div").empty();
-                $("#target-div").append(html);
-            },
-            error: function (XmlHttpRequest) {
-                alert('Произошла ошибка');
-                console.log(XmlHttpRequest);
-            }
+    $(document).ready(function () {
+        $(".filter").change(function () {
+            filterAndSortProjectListLogic();
         });
-        return false;
     });
+}
+
+function filterAndSortProjectListLogic() {
+    var sortProperty = $(".active")[0].dataset.property;
+    var startDateFilterValue = $("#startDate-filter").val();
+    var priorityFilterValue = $("#priority-filter").val();
+    var managerFilterValue = $("#manager-filter").val();
+
+    $.ajax({
+        url: '/Project/GetFilteredAndSortedProjectList',
+        type: 'Post',
+        data: {
+            sortProperty,
+            startDateFilterValue,
+            priorityFilterValue,
+            managerFilterValue
+        },
+        success: function (html) {
+            $("#target-div").empty();
+            $("#target-div").append(html);
+        },
+        error: function (XmlHttpRequest) {
+            alert('Произошла ошибка');
+            console.log(XmlHttpRequest);
+        }
+    });
+    return false;
 }

@@ -11,32 +11,40 @@
 </p>
 <p>
     Отсортировать по:
-    <button data-property="title" class="btn btn-secondary active" id="title-sort-btn" onclick="sortProjectListBy('title')">Названию</button>
-    <button data-property="customer" class="btn btn-secondary btn-sm" id="customer-sort-btn" onclick="sortProjectListBy('customer')">Заказчику</button>
-    <button data-property="performer" class="btn btn-secondary btn-sm" id="performer-sort-btn" onclick="sortProjectListBy('performer')">Исполнителю</button>
-    <button data-property="priority" class="btn btn-secondary btn-sm" id="priority-sort-btn" onclick="sortProjectListBy('priority')">Приоритету</button>
-    <button data-property="dateStart" class="btn btn-secondary btn-sm" id="dateStart-sort-btn" onclick="sortProjectListBy('dateStart')">Дате начала</button>
-    <button data-property="dateEnd" class="btn btn-secondary btn-sm" id="dateEnd-sort-btn" onclick="sortProjectListBy('dateEnd')">Дате окончания</button>
+    <button data-property="title" class="btn btn-secondary active" id="title-sort-btn" onclick="sortAndFilterProjectList('title')">Названию</button>
+    <button data-property="customer" class="btn btn-secondary btn-sm" id="customer-sort-btn" onclick="sortAndFilterProjectList('customer')">Заказчику</button>
+    <button data-property="performer" class="btn btn-secondary btn-sm" id="performer-sort-btn" onclick="sortAndFilterProjectList('performer')">Исполнителю</button>
+    <button data-property="priority" class="btn btn-secondary btn-sm" id="priority-sort-btn" onclick="sortAndFilterProjectList('priority')">Приоритету</button>
+    <button data-property="dateStart" class="btn btn-secondary btn-sm" id="dateStart-sort-btn" onclick="sortAndFilterProjectList('dateStart')">Дате начала</button>
+    <button data-property="dateEnd" class="btn btn-secondary btn-sm" id="dateEnd-sort-btn" onclick="sortAndFilterProjectList('dateEnd')">Дате окончания</button>
 </p>
 <p>
     <div class="row">
         <div class="col-md-1">Фильтры:</div>
         <div class="col-md-3">
             <label for="startDate-filter">Дата начала</label>
-            <select id="startDate-filter" name="startDate-filter" class="form-control filter" onchange="filterProjectList()">
+            <select id="startDate-filter" name="startDate-filter" class="form-control filter">
                 <option selected value="">Дата начала</option>
             </select>
         </div>
         <div class="col-md-3">
             <label for="priority-filter">Приоритет</label>
-            <select id="priority-filter" name="priority-filter" class="form-control filter" onchange="filterProjectList()">
+            <select id="priority-filter" name="priority-filter" class="form-control filter">
                 <option selected value="">Приоритет</option>
+                @for (int i = 0; i <= 10; i++)
+                {
+                    <option value="@i">@i</option>
+                }
             </select>
         </div>
         <div class="col-md-3">
             <label for="manager-filter">Руководитель</label>
-            <select id="manager-filter" name="manager-filter" class="form-control filter" onchange="filterProjectList()">
+            <select id="manager-filter" name="manager-filter" class="form-control filter">
                 <option selected value="">Руководитель</option>
+                @foreach (var manager in ViewBag.Managers)
+                {
+                    <option value="@manager.Id">@manager.FullName</option>
+                }
             </select>
         </div>
     </div>
@@ -103,3 +111,9 @@
 
     </table>
 </div>
+
+@section scripts {
+    <script>
+        filterAndSortProjectList();
+    </script>
+}

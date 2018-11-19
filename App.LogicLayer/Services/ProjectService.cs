@@ -95,6 +95,45 @@ namespace App.LogicLayer.Services
             _unitOfWork.Save();
         }
 
+        public List<EmployeeDTO> GetManagerList()
+        {
+            List<Guid> managerIds = _unitOfWork
+                .Projects
+                .Find(p => p.ManagerId != null)
+                .Select(i => ((Guid)i.ManagerId)).ToList();
+            
+            List<Employee> managers = _unitOfWork
+                .Employees.GetAll()
+                .Where(e => managerIds.Contains(e.Id))
+                .ToList();
+
+            return Mapper.Map<IEnumerable<EmployeeDTO>>(managers).ToList();
+        }
+
+        public IEnumerable<ProjectDTO> GetFilteredAndSortedProjectList(
+            string startDateValue, string priorityValue, string managerId, string sortProperty
+            )
+        {
+            IQueryable<Project> filteredProjectList = _unitOfWork
+                .Projects.GetAll();
+
+            if (!string.IsNullOrEmpty(managerId))
+            {
+                Guid guidManagerId = Guid.Parse(managerId);
+                filteredProjectList = filteredProjectList.Where(p => p.ManagerId == guidManagerId);
+            }
+
+            if (!string.IsNullOrEmpty(priorityValue))
+            {
+                int intPriorityValue = int.Parse(priorityValue);
+                filteredProjectList = filteredProjectList.Where(p => p.Priority == intPriorityValue);
+            }
+
+            IEnumerable<Project> filteredAndSortedList = SortProjectListByProperty(filteredProjectList, sortProperty);
+
+            return Mapper.Map<IEnumerable<ProjectDTO>>(filteredAndSortedList);
+        }
+
         private IEnumerable<Project> SortProjectListByProperty(IQueryable<Project> filteredProjectList = null, string property = "title")
         {
             filteredProjectList = filteredProjectList ?? _unitOfWork.Projects.GetAll();
@@ -122,20 +161,6 @@ namespace App.LogicLayer.Services
             }
 
             return filteredProjectList.ToList();
-        }
-
-        public IEnumerable<ProjectDTO> GetFilteredAndSortedProjectList(
-            string startDateValue, string priorityValue, string managerId, string sortProperty
-            )
-        {
-            IQueryable<Project> filteredProjectList = _unitOfWork
-                .Projects
-                .Find(p => p.Priority == int.Parse(priorityValue) && p.ManagerId == Guid.Parse(managerId))
-                .AsQueryable();
-
-            IEnumerable<Project> filteredAndSortedList = SortProjectListByProperty(filteredProjectList, sortProperty);
-
-            return Mapper.Map<IEnumerable<ProjectDTO>>(filteredAndSortedList);
         }
     }
 }

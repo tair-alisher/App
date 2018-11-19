@@ -37,6 +37,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -274,7 +275,6 @@
     <Content Include="Views\Project\AttachedEmployees.cshtml" />
     <Content Include="Views\Project\AttachEmployee.cshtml" />
     <Content Include="Views\Base\Error.cshtml" />
-    <Content Include="Views\Project\GetProjectListSortedBy.cshtml" />
     <Content Include="Views\Project\GetFilteredAndSortedProjectList.cshtml" />
   </ItemGroup>
   <ItemGroup>

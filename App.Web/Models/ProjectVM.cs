@@ -17,6 +17,7 @@ namespace App.Web.Models
         [Display(Name = "Исполнитель")]
         public string Performer { get; set; }
 
+        [Range(0, 10)]
         [Display(Name = "Приоритет")]
         public int Priority { get; set; }
 
