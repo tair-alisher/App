@@ -9,6 +9,6 @@ namespace App.LogicLayer.Interfaces
         void AttachEmployee(Guid projectId, Guid employeeId);
         void DetachEmployee(Guid projectId, Guid employeeId);
         List<EmployeeDTO> GetManagerList();
-        IEnumerable<ProjectDTO> GetFilteredAndSortedProjectList(string startDate, string priority, string managerId, string sortProperty);
+        IEnumerable<ProjectDTO> GetFilteredAndSortedProjectList(SortAndFilterParamsDTO parameters);
     }
 }

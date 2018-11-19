@@ -21,12 +21,7 @@
 <p>
     <div class="row">
         <div class="col-md-1">Фильтры:</div>
-        <div class="col-md-3">
-            <label for="startDate-filter">Дата начала</label>
-            <select id="startDate-filter" name="startDate-filter" class="form-control filter">
-                <option selected value="">Дата начала</option>
-            </select>
-        </div>
+        
         <div class="col-md-3">
             <label for="priority-filter">Приоритет</label>
             <select id="priority-filter" name="priority-filter" class="form-control filter">
@@ -46,6 +41,17 @@
                     <option value="@manager.Id">@manager.FullName</option>
                 }
             </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-1">Дата начала</div>
+        <div class="col-md-3">
+            <label for="date-start-from">с</label>
+            <input type="date" name="date-start-from" id="date-start-from" class="form-control filter" />
+        </div>
+        <div class="col-md-3">
+            <label for="date-start-to">по</label>
+            <input type="date" name="date-start-to" id="date-start-to" class="form-control filter" />
         </div>
     </div>
 </p>

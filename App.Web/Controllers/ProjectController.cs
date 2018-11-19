@@ -174,12 +174,22 @@ namespace App.Web.Controllers
         public ActionResult GetFilteredAndSortedProjectList()
         {
             string sortProperty = Request.Form["sortProperty"];
-            string startDateFilterValue = Request.Form["startDateFilterValue"];
-            string priorityFilterValue = Request.Form["priorityFilterValue"];
-            string managerFilterValue = Request.Form["managerFilterValue"];
+            string dateStartFromFilter = Request.Form["dateStartFromFilter"];
+            string dateStartToFilter = Request.Form["dateStartToFilter"];
+            string priorityFilter = Request.Form["priorityFilter"];
+            string managerFilter = Request.Form["managerFilter"];
+
+            SortAndFilterParamsDTO sortAndFilterParams = new SortAndFilterParamsDTO
+            {
+                SortProperty = sortProperty,
+                DateStartFromFilter = dateStartFromFilter,
+                DateStartToFilter = dateStartToFilter,
+                PriorityFilter = priorityFilter,
+                ManagerFilter = managerFilter
+            };
 
             List<ProjectDTO> projectDTOFilteredAndSortedList = ProjectService
-                .GetFilteredAndSortedProjectList(startDateFilterValue, priorityFilterValue, managerFilterValue, sortProperty)
+                .GetFilteredAndSortedProjectList(sortAndFilterParams)
                 .ToList();
 
             List<ProjectVM> projectVMFilteredAndSortedList = Mapper.Map<IEnumerable<ProjectVM>>(projectDTOFilteredAndSortedList).ToList();

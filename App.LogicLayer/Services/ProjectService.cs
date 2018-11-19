@@ -110,28 +110,45 @@ namespace App.LogicLayer.Services
             return Mapper.Map<IEnumerable<EmployeeDTO>>(managers).ToList();
         }
 
-        public IEnumerable<ProjectDTO> GetFilteredAndSortedProjectList(
-            string startDateValue, string priorityValue, string managerId, string sortProperty
-            )
+        public IEnumerable<ProjectDTO> GetFilteredAndSortedProjectList(SortAndFilterParamsDTO parameters)
         {
             IQueryable<Project> filteredProjectList = _unitOfWork
                 .Projects.GetAll();
 
-            if (!string.IsNullOrEmpty(managerId))
+            if (!string.IsNullOrEmpty(parameters.ManagerFilter))
             {
-                Guid guidManagerId = Guid.Parse(managerId);
+                Guid guidManagerId = Guid.Parse(parameters.ManagerFilter);
                 filteredProjectList = filteredProjectList.Where(p => p.ManagerId == guidManagerId);
             }
 
-            if (!string.IsNullOrEmpty(priorityValue))
+            if (!string.IsNullOrEmpty(parameters.PriorityFilter))
             {
-                int intPriorityValue = int.Parse(priorityValue);
+                int intPriorityValue = int.Parse(parameters.PriorityFilter);
                 filteredProjectList = filteredProjectList.Where(p => p.Priority == intPriorityValue);
             }
 
-            IEnumerable<Project> filteredAndSortedList = SortProjectListByProperty(filteredProjectList, sortProperty);
+            if (ValuesAreNotNull(parameters.DateStartFromFilter, parameters.DateStartToFilter))
+            {
+                DateTime dateStartFromFilter = DateTime.Parse(parameters.DateStartFromFilter);
+                DateTime dateStartToFilter = DateTime.Parse(parameters.DateStartToFilter);
+
+                filteredProjectList = filteredProjectList
+                    .Where(p => p.DateStart >= dateStartFromFilter &&
+                        p.DateStart <= dateStartToFilter);
+            }
+
+            IEnumerable<Project> filteredAndSortedList = SortProjectListByProperty(filteredProjectList, parameters.SortProperty);
 
             return Mapper.Map<IEnumerable<ProjectDTO>>(filteredAndSortedList);
+        }
+
+        private bool ValuesAreNotNull(params string[] values)
+        {
+            foreach (string value in values)
+                if (string.IsNullOrEmpty(value))
+                    return false;
+
+            return true;
         }
 
         private IEnumerable<Project> SortProjectListByProperty(IQueryable<Project> filteredProjectList = null, string property = "title")

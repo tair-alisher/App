@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="DTO\EmployeeDTO.cs" />
     <Compile Include="DTO\ProjectDTO.cs" />
+    <Compile Include="DTO\SortAndFilterParamsDTO.cs" />
     <Compile Include="Infrastructure\Exceptions\NotFoundException.cs" />
     <Compile Include="Infrastructure\ServiceModule.cs" />
     <Compile Include="Interfaces\ICrudService.cs" />

@@ -128,18 +128,20 @@ function filterAndSortProjectList() {
 
 function filterAndSortProjectListLogic() {
     var sortProperty = $(".active")[0].dataset.property;
-    var startDateFilterValue = $("#startDate-filter").val();
-    var priorityFilterValue = $("#priority-filter").val();
-    var managerFilterValue = $("#manager-filter").val();
+    var dateStartFromFilter = $("date-start-from").val();
+    var dateStartToFilter = $("date-start-to").val();
+    var priorityFilte = $("#priority-filter").val();
+    var managerFilter = $("#manager-filter").val();
 
     $.ajax({
         url: '/Project/GetFilteredAndSortedProjectList',
         type: 'Post',
         data: {
             sortProperty,
-            startDateFilterValue,
-            priorityFilterValue,
-            managerFilterValue
+            dateStartFromFilter,
+            dateStartToFilter,
+            priorityFilte,
+            managerFilter
         },
         success: function (html) {
             $("#target-div").empty();
