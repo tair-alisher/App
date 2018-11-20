@@ -21,19 +21,24 @@ namespace App.Web.Controllers
 
             return View(employeeVMList);
         }
-
+        
         public ActionResult Details(Guid? id)
         {
-            if (id == null)
+            try
+            {
+                EmployeeDTO employeeDTO = EmployeeService.Get(id);
+                EmployeeVM employeeVM = Mapper.Map<EmployeeVM>(employeeDTO);
+
+                return View(employeeVM);
+            }
+            catch (ArgumentNullException)
+            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-
-            EmployeeDTO employeeDTO = EmployeeService.Get((Guid)id);
-            if (employeeDTO == null)
+            }
+            catch (HttpNotFoundException)
+            {
                 return HttpNotFound();
-
-            EmployeeVM employeeVM = Mapper.Map<EmployeeVM>(employeeDTO);
-
-            return View(employeeVM);
+            }
         }
 
         public ActionResult Create()
@@ -62,16 +67,21 @@ namespace App.Web.Controllers
 
         public ActionResult Edit(Guid? id)
         {
-            if (id == null)
+            try
+            {
+                EmployeeDTO employeeDTO = EmployeeService.Get(id);
+                EmployeeVM employeeVM = Mapper.Map<EmployeeVM>(employeeDTO);
+
+                return View(employeeVM);
+            }
+            catch (ArgumentNullException)
+            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-
-            EmployeeDTO employeeDTO = EmployeeService.Get((Guid)id);
-            if (employeeDTO == null)
+            }
+            catch (HttpNotFoundException)
+            {
                 return HttpNotFound();
-
-            EmployeeVM employeeVM = Mapper.Map<EmployeeVM>(employeeDTO);
-
-            return View(employeeVM);
+            }
         }
 
         [HttpPost]

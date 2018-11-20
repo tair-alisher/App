@@ -1,4 +1,5 @@
 ﻿using App.LogicLayer.DTO;
+using App.LogicLayer.Infrastructure.Exceptions;
 using App.LogicLayer.Interfaces;
 using App.Web.Models;
 using AutoMapper;
@@ -17,8 +18,7 @@ namespace App.Web.Controllers
         public ActionResult Index()
         {
             List<ProjectDTO> projectDTOList = ProjectService
-                .GetAll()
-                .OrderBy(p => p.Title)
+                .GetProjectListOrderedByTitle()
                 .ToList();
             List<ProjectVM> projectVMList = Mapper.Map<IEnumerable<ProjectVM>>(projectDTOList).ToList();
 
@@ -30,16 +30,21 @@ namespace App.Web.Controllers
 
         public ActionResult Details(Guid? id)
         {
-            if (id == null)
+            try
+            {
+                ProjectDTO projectDTO = ProjectService.Get(id);
+                ProjectVM projectVM = Mapper.Map<ProjectVM>(projectDTO);
+
+                return View(projectVM);
+            }
+            catch (ArgumentNullException)
+            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-
-            ProjectDTO projectDTO = ProjectService.Get((Guid)id);
-            if (projectDTO == null)
+            }
+            catch (NotFoundException)
+            {
                 return HttpNotFound();
-
-            ProjectVM projectVM = Mapper.Map<ProjectVM>(projectDTO);
-
-            return View(projectVM);
+            }
         }
 
         public ActionResult Create()
@@ -76,18 +81,22 @@ namespace App.Web.Controllers
 
         public ActionResult Edit(Guid? id)
         {
-            if (id == null)
+            try
+            {
+                ProjectDTO projectDTO = ProjectService.Get(id);
+                ProjectVM projectVM = Mapper.Map<ProjectVM>(projectDTO);
+                ViewBag.ManagerId = GetEmployeeSelectList(projectVM.ManagerId);
+
+                return View(projectVM);
+            }
+            catch (ArgumentNullException)
+            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-
-            ProjectDTO projectDTO = ProjectService.Get((Guid)id);
-            if (projectDTO == null)
+            }
+            catch (NotFoundException)
+            {
                 return HttpNotFound();
-
-            ProjectVM projectVM = Mapper.Map<ProjectVM>(projectDTO);
-            
-            ViewBag.ManagerId = GetEmployeeSelectList(projectVM.ManagerId);
-
-            return View(projectVM);
+            }
         }
 
         [HttpPost]
@@ -128,16 +137,21 @@ namespace App.Web.Controllers
 
         public ActionResult AttachedEmployees(Guid? id)
         {
-            if (id == null)
+            try
+            {
+                ProjectDTO projectDTO = ProjectService.Get(id);
+                ProjectVM projectVM = Mapper.Map<ProjectVM>(projectDTO);
+
+                return View(projectVM);
+            }
+            catch (ArgumentNullException)
+            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-
-            ProjectDTO projectDTO = ProjectService.Get((Guid)id);
-            if (projectDTO == null)
+            }
+            catch (NotFoundException)
+            {
                 return HttpNotFound();
-
-            ProjectVM projectVM = Mapper.Map<ProjectVM>(projectDTO);
-
-            return View(projectVM);
+            }
         }
 
         [HttpPost]
@@ -150,9 +164,18 @@ namespace App.Web.Controllers
                 employeeVM = Mapper.Map<EmployeeVM>(EmployeeService.Get(employeeId));
                 ProjectService.AttachEmployee(projectId, employeeId);
             }
+            catch (ArgumentNullException)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             catch (Exception ex)
             {
-                return Content(ex.Message);
+                return RedirectToRoute(new
+                {
+                    controller = "Base",
+                    action = "Error",
+                    message = ex.Message
+                });
             }
 
             return PartialView(employeeVM);

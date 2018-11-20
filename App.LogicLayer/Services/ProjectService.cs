@@ -44,11 +44,26 @@ namespace App.LogicLayer.Services
             _unitOfWork.Dispose();
         }
 
-        public ProjectDTO Get(Guid id)
+        public ProjectDTO Get(Guid? id)
         {
+            if (id == null)
+                throw new ArgumentNullException();
+
             Project project = _unitOfWork.Projects.Get(id);
+            if (project == null)
+                throw new NotFoundException();
 
             return Mapper.Map<ProjectDTO>(project);
+        }
+
+        public IEnumerable<ProjectDTO> GetProjectListOrderedByTitle()
+        {
+            List<Project> projects = _unitOfWork.Projects
+                .GetAll()
+                .OrderBy(p => p.Title)
+                .ToList();
+
+            return Mapper.Map<IEnumerable<ProjectDTO>>(projects);
         }
 
         public IEnumerable<ProjectDTO> GetAll()

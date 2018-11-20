@@ -7,7 +7,7 @@ namespace App.LogicLayer.Interfaces
     {
         IEnumerable<T> GetAll();
         void Add(T item);
-        T Get(Guid id);
+        T Get(Guid? id);
         void Update(T item);
         void Delete(Guid id);
         void Dispose();

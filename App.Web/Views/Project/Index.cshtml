@@ -22,8 +22,10 @@
     <div class="row filters">
         <div class="col-md-1">Фильтры:</div>
         
-        <div class="col-md-3">
+        <div class="col-md-2">
             <label for="priority-filter">Приоритет</label>
+        </div>
+        <div class="col-md-3">
             <select id="priority-filter" name="priority-filter" class="form-control filter">
                 <option selected value="">Приоритет</option>
                 @for (int i = 0; i <= 10; i++)
@@ -32,8 +34,10 @@
                 }
             </select>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <label for="manager-filter">Руководитель</label>
+        </div>
+        <div class="col-md-3">
             <select id="manager-filter" name="manager-filter" class="form-control filter">
                 <option selected value="">Руководитель</option>
                 @foreach (var manager in ViewBag.Managers)
@@ -44,13 +48,17 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-1">Дата начала</div>
-        <div class="col-md-3">
+        <div class="col-md-2 offset-md-1">Дата начала</div>
+        <div class="col-md-1">
             <label for="date-start-from">с</label>
-            <input type="date" name="date-start-from" id="date-start-from" class="form-control filter" />
         </div>
         <div class="col-md-3">
+            <input type="date" name="date-start-from" id="date-start-from" class="form-control filter" />
+        </div>
+        <div class="col-md-1">
             <label for="date-start-to">по</label>
+        </div>
+        <div class="col-md-3">
             <input type="date" name="date-start-to" id="date-start-to" class="form-control filter" />
         </div>
     </div>

@@ -58,9 +58,14 @@ namespace App.LogicLayer.Services
             _unitOfWork.Dispose();
         }
 
-        public EmployeeDTO Get(Guid id)
+        public EmployeeDTO Get(Guid? id)
         {
+            if (id == null)
+                throw new ArgumentNullException();
+
             Employee employee = _unitOfWork.Employees.Get(id);
+            if (employee == null)
+                throw new NotFoundException();
 
             return Mapper.Map<EmployeeDTO>(employee);
         }
