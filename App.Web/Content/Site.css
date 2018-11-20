@@ -1,3 +1,7 @@
 ﻿#navbar {
     background-color: #563D7C;
 }
+.filters {
+    border-bottom: 1px solid #dee2e6;
+    padding: 5px 0px;
+}

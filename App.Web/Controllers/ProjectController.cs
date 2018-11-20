@@ -16,7 +16,10 @@ namespace App.Web.Controllers
 
         public ActionResult Index()
         {
-            List<ProjectDTO> projectDTOList = ProjectService.GetAll().ToList();
+            List<ProjectDTO> projectDTOList = ProjectService
+                .GetAll()
+                .OrderBy(p => p.Title)
+                .ToList();
             List<ProjectVM> projectVMList = Mapper.Map<IEnumerable<ProjectVM>>(projectDTOList).ToList();
 
             List<EmployeeDTO> managerList = ProjectService.GetManagerList();
