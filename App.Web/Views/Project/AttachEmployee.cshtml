@@ -1,0 +1,5 @@
+﻿@model App.Web.Models.EmployeeVM
+
+<li id="pinned-@Model.Id">
+    @Html.DisplayFor(model => model.FullName) <button class="btn btn-link text-danger" onclick="detachEmployee('@Model.Id')">Убрать</button>
+</li>

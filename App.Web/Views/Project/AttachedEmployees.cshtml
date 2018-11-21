@@ -1,0 +1,47 @@
+﻿@model App.Web.Models.ProjectVM
+
+@{
+    ViewBag.Title = "Сотрудники на проекте";
+}
+
+<h2>@Html.DisplayFor(model => model.Title)</h2>
+<input type="hidden" name="projectId" id="projectId" value="@Model.Id" />
+<div class="form-group" id="responsible-employees">
+    <div calss="col-md-12" id="search-input">
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="searching">Поиск</span>
+            </div>
+            <input type="text" class="form-control" id="search-input-value" placeholder="Поиск по имени и/или фамилии" aria-describedby="search-cancel-buttons" />
+            <div class="input-group-append" id="search-cancel-buttons">
+                <button class="btn btn-outline-primary" type="button" onclick="searchEmployees()">Искать</button>
+                <button class="btn btn-outline-secondary" type="button" onclick="clearSearch()">Сбросить</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="found-items"></div>
+
+
+<h4>Сотрудники на проекте</h4>
+@Html.AntiForgeryToken()
+<ul id="attached-employees">
+    @if (Model.Employees.Count() > 0)
+    {
+        foreach (var employee in Model.Employees)
+        {
+            <li id="pinned-@employee.Id">@employee.FullName <button class="btn btn-link text-danger" onclick="detachEmployee('@employee.Id')">Убрать</button></li>
+        }
+    }
+    else
+    {
+        <li id="no-employees-message">За этим проектом не закреплено ни одного сотрудника.</li>
+    }
+</ul>
+
+@section scripts {
+    <script>
+        searchByEnter();
+    </script>
+}

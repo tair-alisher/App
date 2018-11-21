@@ -1,0 +1,133 @@
+﻿@model IEnumerable<App.Web.Models.ProjectVM>
+
+@{
+    ViewBag.Title = "Проекты";
+}
+
+<h2>Проекты</h2>
+
+<p>
+    @Html.ActionLink("Добавить проект", "Create")
+</p>
+<p>
+    Отсортировать по:
+    <button data-property="title" class="btn btn-secondary active" id="title-sort-btn" onclick="sortAndFilterProjectList('title')">Названию</button>
+    <button data-property="customer" class="btn btn-secondary btn-sm" id="customer-sort-btn" onclick="sortAndFilterProjectList('customer')">Заказчику</button>
+    <button data-property="performer" class="btn btn-secondary btn-sm" id="performer-sort-btn" onclick="sortAndFilterProjectList('performer')">Исполнителю</button>
+    <button data-property="priority" class="btn btn-secondary btn-sm" id="priority-sort-btn" onclick="sortAndFilterProjectList('priority')">Приоритету</button>
+    <button data-property="dateStart" class="btn btn-secondary btn-sm" id="dateStart-sort-btn" onclick="sortAndFilterProjectList('dateStart')">Дате начала</button>
+    <button data-property="dateEnd" class="btn btn-secondary btn-sm" id="dateEnd-sort-btn" onclick="sortAndFilterProjectList('dateEnd')">Дате окончания</button>
+</p>
+<p>
+    <div class="row filters">
+        <div class="col-md-1">Фильтры:</div>
+        
+        <div class="col-md-2">
+            <label for="priority-filter">Приоритет</label>
+        </div>
+        <div class="col-md-3">
+            <select id="priority-filter" name="priority-filter" class="form-control filter">
+                <option selected value="">Приоритет</option>
+                @for (int i = 0; i <= 10; i++)
+                {
+                    <option value="@i">@i</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label for="manager-filter">Руководитель</label>
+        </div>
+        <div class="col-md-3">
+            <select id="manager-filter" name="manager-filter" class="form-control filter">
+                <option selected value="">Руководитель</option>
+                @foreach (var manager in ViewBag.Managers)
+                {
+                    <option value="@manager.Id">@manager.FullName</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2 offset-md-1">Дата начала</div>
+        <div class="col-md-1">
+            <label for="date-start-from">с</label>
+        </div>
+        <div class="col-md-3">
+            <input type="date" name="date-start-from" id="date-start-from" class="form-control filter" />
+        </div>
+        <div class="col-md-1">
+            <label for="date-start-to">по</label>
+        </div>
+        <div class="col-md-3">
+            <input type="date" name="date-start-to" id="date-start-to" class="form-control filter" />
+        </div>
+    </div>
+</p>
+<div id="target-div">
+    <table class="table table-sm table-responsive">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Customer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Performer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Priority)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateStart)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateEnd)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ManagerId)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Customer)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Performer)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Priority)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateStart)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateEnd)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Manager.FullName)
+                </td>
+                <td>
+                    @Html.ActionLink("Редактировать", "Edit", new { id = item.Id })<br />
+                    @Html.ActionLink("Подробнее", "Details", new { id = item.Id })<br />
+                    @Html.ActionLink("Сотрудники", "AttachedEmployees", new { id = item.Id })<br />
+                    @Html.ActionLink("Удалить", "Delete", new { id = item.Id })
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>
+
+@section scripts {
+    <script>
+        filterAndSortProjectList();
+    </script>
+}
