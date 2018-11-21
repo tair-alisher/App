@@ -89,7 +89,7 @@ namespace App.DataLayer.EF
                 DateStart = DateTime.Today.AddDays(1),
                 DateEnd = DateTime.Today.AddDays(2),
                 CreatedAt = DateTime.Now,
-                ManagerId = context.Employees.Last().Id
+                ManagerId = context.Employees.ToList().Last().Id
             });
 
             context.SaveChanges();
