@@ -15,7 +15,7 @@ namespace App.LogicLayer.Tests.Services.Tests
         [TestInitialize]
         public void TestInitialize()
         {
-            base.TestInitialize();
+            base.Init();
         }
 
         [TestMethod]

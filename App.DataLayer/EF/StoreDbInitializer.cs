@@ -78,6 +78,19 @@ namespace App.DataLayer.EF
                 CreatedAt = DateTime.Today.AddDays(-1),
                 ManagerId = null
             });
+            context.Projects.Add(new Project
+            {
+                Id = Guid.NewGuid(),
+                Title = "Ремонт авто",
+                Customer = "Клиент",
+                Performer = "СТО",
+                Priority = 5,
+                Comment = "В кратчайшие сроки",
+                DateStart = DateTime.Today.AddDays(1),
+                DateEnd = DateTime.Today.AddDays(2),
+                CreatedAt = DateTime.Now,
+                ManagerId = context.Employees.Last().Id
+            });
 
             context.SaveChanges();
         }

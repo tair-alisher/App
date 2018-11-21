@@ -16,7 +16,7 @@ namespace App.LogicLayer.Tests.Services.Tests
         public EmployeeService EmployeeService;
         public ProjectService ProjectService;
 
-        public void TestInitialize()
+        public void Init()
         {
             ResetAndInitializeMapper();
             SetupMockEmployeeAndProjectRepositories();
